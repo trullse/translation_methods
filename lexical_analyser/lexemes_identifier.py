@@ -1,5 +1,6 @@
 from consts import KEY_WORDS, OPERATORS
 from prettytable import PrettyTable
+from token import Token
 
 
 def check_num(element: str):
@@ -41,7 +42,7 @@ def check_identifier(element: str):
 
 
 def check_match(element: str, identifiers):
-    ident = [iden[1] for iden in identifiers]
+    ident = [iden.text for iden in identifiers]
     opers = list(OPERATORS.keys())
     keyws = list(KEY_WORDS.keys())
 
@@ -73,12 +74,16 @@ def lexemes_identifier(row_list):
     is_prev_open_bracket = False
     is_prev_lambda = False
     bracket = []
+    token_list = []
 
     for el in row_list:
         cur_el = el['lexeme']
 
         if cur_el in ('(', ')'):
-            lexemes.append([cur_index, cur_el, 'Operation divider'])
+            # lexemes.append([cur_index, cur_el, 'Operation divider'])
+            token = Token(el['line'], cur_index, cur_el, 'Operation divider')
+            lexemes.append(token)
+            token_list.append(token)
             if len(bracket) == 0 and cur_el == ')':
                 raise Exception(f"Lexical error on line {el['line']}: Closing bracket before open one")
             elif cur_el == '(':
@@ -98,36 +103,59 @@ def lexemes_identifier(row_list):
             elif check_num(cur_el):
                 if is_prev_open_bracket:
                     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
-                lexemes.append([cur_index, cur_el, 'Numeric constant'])
-                consts.append([cur_index, cur_el, 'Numeric constant'])
+                token = Token(el['line'], cur_index, cur_el, 'Numeric constant')
+                # lexemes.append([cur_index, cur_el, 'Numeric constant'])
+                lexemes.append(token)
+                # consts.append([cur_index, cur_el, 'Numeric constant'])
+                consts.append(token)
+                token_list.append(token)
                 cur_index += 1
             elif check_str(cur_el):
                 if is_prev_open_bracket:
                     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
-                lexemes.append([cur_index, cur_el, 'String constant'])
-                consts.append([cur_index, cur_el, 'String constant'])
+                # lexemes.append([cur_index, cur_el, 'String constant'])
+                token = Token(el['line'], cur_index, cur_el, 'String constant')
+                lexemes.append(token)
+                # consts.append([cur_index, cur_el, 'String constant'])
+                consts.append(token)
+                token_list.append(token)
                 cur_index += 1
 
             elif cur_el in KEY_WORDS.keys():
                 if not is_prev_open_bracket:
                     raise Exception(f"Lexical error on line {el['line']}: Keyword is not first word '{cur_el}'")
-                lexemes.append([cur_index, cur_el, KEY_WORDS[cur_el]])
+                # lexemes.append([cur_index, cur_el, KEY_WORDS[cur_el]])
+                token = Token(el['line'], cur_index, cur_el, KEY_WORDS[cur_el])
+                lexemes.append(token)
+                token_list.append(token)
                 cur_index += 1
                 if cur_el == 'LAMBDA' or cur_el == 'lambda':
                     is_prev_lambda = True
             elif cur_el in OPERATORS.keys():
                 if not is_prev_open_bracket:
                     raise Exception(f"Lexical error on line {el['line']}: Operator is not first word '{cur_el}'")
-                lexemes.append([cur_index, cur_el, OPERATORS[cur_el]])
+                # lexemes.append([cur_index, cur_el, OPERATORS[cur_el]])
+                token = Token(el['line'], cur_index, cur_el, OPERATORS[cur_el])
+                lexemes.append(token)
+                token_list.append(token)
                 cur_index += 1
             elif check_identifier(cur_el):
-                if cur_el not in [temp[1] for temp in identifiers]:
+                if cur_el not in [temp.text for temp in identifiers]:
                     match = check_match(cur_el, identifiers)
                     if is_prev_open_bracket:
                         raise Exception(f"Lexical error on line {el['line']}: '{cur_el}'. Do you mean using {match}?")
-                    lexemes.append([cur_index, cur_el, 'Identifier'])
-                    identifiers.append([cur_index, cur_el, 'Identifier'])
+                    # lexemes.append([cur_index, cur_el, 'Identifier'])
+                    token = Token(el['line'], cur_index, cur_el, 'Identifier')
+                    lexemes.append(token)
+                    # identifiers.append([cur_index, cur_el, 'Identifier'])
+                    identifiers.append(token)
+                    token_list.append(Token(el['line'], cur_index, cur_el, 'Identifier'))
                     cur_index += 1
+                else:
+                    for token in identifiers:
+                        if token.text == cur_el:
+                            token_list.append(Token(el['line'], token.index, token.text, token.info))
+                            break
             else:
                 if is_prev_open_bracket:
                     match = check_match(cur_el, identifiers)
@@ -137,12 +165,12 @@ def lexemes_identifier(row_list):
 
             is_prev_open_bracket = False
 
-    return lexemes, identifiers, consts
+    return lexemes, identifiers, consts, token_list
 
 
 def table_output(lexemes):
     table = PrettyTable()
     table.field_names = ['id', 'identifier', 'description']
     for lex in lexemes:
-        table.add_row(lex)
+        table.add_row([lex.index, lex.text, lex.info])
     return table
