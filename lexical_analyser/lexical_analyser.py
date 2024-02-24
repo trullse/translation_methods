@@ -1,0 +1,26 @@
+from tkinter import filedialog as fd
+from lexemes_identifier import lexemes_identifier, table_output
+from lexeme_divider import lexeme_divider
+from lexeme_thread_maker import lexeme_thread_maker
+
+
+def lexical_analyser():
+    filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
+    with open(filename, "r") as f:
+        code = f.read()
+    raw_lexemes = lexeme_divider(code)
+    #print(raw_lexemes)
+    try:
+        lexemes, identifiers, consts = lexemes_identifier(raw_lexemes)
+    except Exception as e:
+        print(e)
+        return
+
+    table = table_output(lexemes)
+    print(table)
+    lexeme_thread = lexeme_thread_maker(raw_lexemes, identifiers, consts)
+    print(lexeme_thread)
+
+
+if __name__ == "__main__":
+    lexical_analyser()
