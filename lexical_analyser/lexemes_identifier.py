@@ -1,6 +1,6 @@
-from consts import KEY_WORDS, OPERATORS
+from lexical_analyser.consts import KEY_WORDS, OPERATORS
 from prettytable import PrettyTable
-from token import Token
+from lexical_analyser.token import Token
 
 
 def check_num(element: str):
@@ -103,7 +103,7 @@ def lexemes_identifier(row_list):
             elif check_num(cur_el):
                 if is_prev_open_bracket:
                     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
-                token = Token(el['line'], cur_index, cur_el, 'Numeric constant')
+                token = Token(el['line'], cur_index, cur_el, 'Numeric constant', str(cur_el))
                 # lexemes.append([cur_index, cur_el, 'Numeric constant'])
                 lexemes.append(token)
                 # consts.append([cur_index, cur_el, 'Numeric constant'])
@@ -114,7 +114,7 @@ def lexemes_identifier(row_list):
                 if is_prev_open_bracket:
                     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
                 # lexemes.append([cur_index, cur_el, 'String constant'])
-                token = Token(el['line'], cur_index, cur_el, 'String constant')
+                token = Token(el['line'], cur_index, cur_el, 'String constant', str(cur_el))
                 lexemes.append(token)
                 # consts.append([cur_index, cur_el, 'String constant'])
                 consts.append(token)
