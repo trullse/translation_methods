@@ -13,6 +13,19 @@ def to_list_with_str(instruction):
     return output
 
 
+def print_nodes(root: ExpressionNode, tabs=0):
+    nodes_str = str(root)
+    current_tab = tabs
+
+    if isinstance(root, ExpressionNode):
+        print('\t' * current_tab + '[Expression node ')
+        for child in root.nodes:
+            print_nodes(child, current_tab + 1)
+        print('\t' * current_tab + ']')
+    else:
+        print('\t' * current_tab + str(root))
+
+
 def instructions_divider(tokens, start_index, is_origin=False):
     instructions_list = []
     current_instruction = []
@@ -45,7 +58,7 @@ def instructions_divider(tokens, start_index, is_origin=False):
         i += 1
 
     if len(current_instruction) != 0:
-        print(to_list_with_str(current_instruction))
+        # print(to_list_with_str(current_instruction))
         raise Exception(f"Syntax error: No closing bracket")
 
     return instructions_list
@@ -80,7 +93,7 @@ def expression_analyse(instruction: list):
     return ExpressionNode(node_info)
 
 
-def syntax_analyser(tokens):
+def syntax_analyser_internal(tokens):
     instructions = instructions_divider(tokens, 0, True)
     # print(to_list_with_str(instructions))
 
@@ -88,14 +101,10 @@ def syntax_analyser(tokens):
     for instruction in instructions:
         root.append(expression_analyse(instruction))
 
-    # print(len(root))
-    print(root)
+    return root
 
 
-def syntax_output():
-    filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
-    with open(filename, "r") as f:
-        code = f.read()
+def syntax_analyser(code):
     try:
         tokens = lexical_analyser(code, True)
     except Exception as e:
@@ -103,11 +112,16 @@ def syntax_output():
         return
     print('_______________________________________')
     try:
-        syntax_analyser(tokens)
+        result = syntax_analyser_internal(tokens)
     except Exception as e:
         print(e)
         return
+    for node in result:
+        print_nodes(node)
 
 
 if __name__ == "__main__":
-    syntax_output()
+    filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
+    with open(filename, "r") as f:
+        code = f.read()
+    syntax_analyser(code)
