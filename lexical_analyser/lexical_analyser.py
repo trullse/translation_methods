@@ -7,11 +7,7 @@ from .lexeme_substitution import lexeme_substitution
 
 def lexical_analyser(code, output=False):
     raw_lexemes = lexeme_divider(code)
-    try:
-        lexemes, identifiers, consts, tokens = lexemes_identifier(raw_lexemes)
-    except Exception as e:
-        print(e)
-        return
+    lexemes, identifiers, consts, tokens = lexemes_identifier(raw_lexemes)
     table = table_output(lexemes)
     if output:
         print(table)
@@ -27,5 +23,8 @@ if __name__ == "__main__":
     filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
     with open(filename, "r") as f:
         code = f.read()
-    lexical_analyser(code, True)
+    try:
+        lexical_analyser(code, True)
+    except Exception as e:
+        print(e)
 

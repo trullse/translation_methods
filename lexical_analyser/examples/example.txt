@@ -6,4 +6,3 @@
          (list-sum (cdr lst))))))
 
 (print (list-sum (list 1 2 3 4 5)))
-
