@@ -1,35 +1,6 @@
 from tkinter import filedialog as fd
 from lexical_analyser.lexical_analyser import lexical_analyser
-from lexical_analyser.token import Token
-# from Nodes.VariableNode import VariableNode
-# from Nodes.StatementNode import StatementNode
-# from Nodes.ArgsNode import ArgsNode
-# from Nodes.CollectionNode import CollectionNode
-# from Nodes.FuncOperationNode import FuncOperationNode
-from Nodes import ExpressionNode, IdentifierNode, ConstantNode, IdentifierType
-
-
-# def print_node(node):
-#     if type(node) == VariableNode:
-#         print(f'Variable: {node.token.text}')
-#     elif type(node) == CollectionNode:
-#         print('Collection')
-#         for op in node.items:
-#             print_node(op)
-#     elif type(node) == StatementNode:
-#         print('Statement')
-#         for code in node.codeStrings:
-#             print_node(code)
-#     elif type(node) == ArgsNode:
-#         print('Args')
-#         for op in node.items:
-#             print_node(op)
-#     elif type(node) == FuncOperationNode:
-#         print(f'Func {node.func.text} with args')
-#         for op in node.operands:
-#             print_node(op)
-#     else:
-#         print('Undefined')
+from Nodes import ExpressionNode, IdentifierNode, ConstantNode
 
 
 def to_list_with_str(instruction):
@@ -80,12 +51,12 @@ def instructions_divider(tokens, start_index, is_origin=False):
     return instructions_list
 
 
-def expression_analyse2(instruction: list):
+def expression_analyse(instruction: list):
     node_info = []
 
     for token in instruction:
         if isinstance(token, list):
-            node_info.append(expression_analyse2(token))
+            node_info.append(expression_analyse(token))
         elif token.text in ('(', ')'):
             continue
         elif token.value is None:
@@ -109,50 +80,15 @@ def expression_analyse2(instruction: list):
     return ExpressionNode(node_info)
 
 
-# def expression_analyse(instruction: list, prev_is_lambda=False):
-#     node_info = []
-#
-#     if len(instruction) <= 2:
-#         raise Exception(f"Syntax error: Empty instruction")
-#     for token in instruction:
-#         if type(token) == list:
-#             if len(node_info) != 0 and type(node_info[0]) == Token and node_info[0].text == 'lambda':
-#                 node_info.append(expression_analyse(token, True))
-#             node_info.append(expression_analyse(token))
-#         elif token.text in ('(', ')'):
-#             continue
-#         else:
-#             if token.info in ('Keyword', 'Arithmetic operator', 'String operator'):
-#                 if len(node_info) != 0:
-#                     raise Exception(f"Syntax error on line {token.pos}: Function not in the first position")
-#                 else:
-#                     node_info.append(token)
-#             elif token.info in ('Identifier', 'Numeric constant', 'String constant'):
-#                 node_info.append(VariableNode(token))
-#             else:
-#                 raise Exception(f"Syntax error on line {token.pos}: Some error occured")
-#     if type(node_info[0]) == Token:
-#         if node_info[0].text == 'list':
-#             return CollectionNode(node_info[1:])
-#         else:
-#             return FuncOperationNode(node_info[0], node_info[1:])
-#     elif prev_is_lambda:
-#         return ArgsNode(node_info)
-#     else:
-#         if type(node_info[0]) != Token:
-#             print(f'Not token at position {node_info[0].token.pos} {node_info[0].token.text}')
-#         return FuncOperationNode(node_info[0].token, node_info[1:])
-
-
 def syntax_analyser(tokens):
     instructions = instructions_divider(tokens, 0, True)
-    print(to_list_with_str(instructions))
+    # print(to_list_with_str(instructions))
 
     root = []
     for instruction in instructions:
-        root.append(expression_analyse2(instruction))
+        root.append(expression_analyse(instruction))
 
-    print(len(root))
+    # print(len(root))
     print(root)
 
 
@@ -166,7 +102,11 @@ def syntax_output():
         print(e)
         return
     print('_______________________________________')
-    syntax_analyser(tokens)
+    try:
+        syntax_analyser(tokens)
+    except Exception as e:
+        print(e)
+        return
 
 
 if __name__ == "__main__":

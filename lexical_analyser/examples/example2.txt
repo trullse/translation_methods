@@ -2,7 +2,7 @@
   (lambda (str1 str2)
     (if (string= str1 str2) "Equal strings"
       (if (string< str1 str2) "First is less"
-        "First is greater")))))
+        "First is greater"))))
 
 (print (string-compare "minsk" "klimovichi"))
 (print (string-compare "belarus" "bsuir"))

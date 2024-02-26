@@ -85,7 +85,8 @@ def lexemes_identifier(row_list):
             lexemes.append(token)
             token_list.append(token)
             if len(bracket) == 0 and cur_el == ')':
-                raise Exception(f"Lexical error on line {el['line']}: Closing bracket before open one")
+                pass
+                # raise Exception(f"Lexical error on line {el['line']}: Closing bracket before open one")
             elif cur_el == '(':
                 bracket.append(cur_el)
                 if not is_prev_lambda:
@@ -97,12 +98,12 @@ def lexemes_identifier(row_list):
         else:
             is_prev_lambda = False
 
-            if len(bracket) == 0:
-                raise Exception(f"Lexical error on line {el['line']}: Instructions outside the brackets")
+            # if len(bracket) == 0:
+            #     raise Exception(f"Lexical error on line {el['line']}: Instructions outside the brackets")
 
-            elif check_num(cur_el):
-                if is_prev_open_bracket:
-                    raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
+            if check_num(cur_el):
+                # if is_prev_open_bracket:
+                #     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
                 token = Token(el['line'], cur_index, cur_el, 'Numeric constant', str(cur_el))
                 # lexemes.append([cur_index, cur_el, 'Numeric constant'])
                 lexemes.append(token)
@@ -111,8 +112,8 @@ def lexemes_identifier(row_list):
                 token_list.append(token)
                 cur_index += 1
             elif check_str(cur_el):
-                if is_prev_open_bracket:
-                    raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
+                # if is_prev_open_bracket:
+                #     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
                 # lexemes.append([cur_index, cur_el, 'String constant'])
                 token = Token(el['line'], cur_index, cur_el, 'String constant', str(cur_el))
                 lexemes.append(token)
@@ -122,8 +123,8 @@ def lexemes_identifier(row_list):
                 cur_index += 1
 
             elif cur_el in KEY_WORDS.keys():
-                if not is_prev_open_bracket:
-                    raise Exception(f"Lexical error on line {el['line']}: Keyword is not first word '{cur_el}'")
+                # if not is_prev_open_bracket:
+                #     raise Exception(f"Lexical error on line {el['line']}: Keyword is not first word '{cur_el}'")
                 # lexemes.append([cur_index, cur_el, KEY_WORDS[cur_el]])
                 token = Token(el['line'], cur_index, cur_el, KEY_WORDS[cur_el])
                 lexemes.append(token)
@@ -132,8 +133,8 @@ def lexemes_identifier(row_list):
                 if cur_el == 'LAMBDA' or cur_el == 'lambda':
                     is_prev_lambda = True
             elif cur_el in OPERATORS.keys():
-                if not is_prev_open_bracket:
-                    raise Exception(f"Lexical error on line {el['line']}: Operator is not first word '{cur_el}'")
+                # if not is_prev_open_bracket:
+                #     raise Exception(f"Lexical error on line {el['line']}: Operator is not first word '{cur_el}'")
                 # lexemes.append([cur_index, cur_el, OPERATORS[cur_el]])
                 token = Token(el['line'], cur_index, cur_el, OPERATORS[cur_el])
                 lexemes.append(token)
