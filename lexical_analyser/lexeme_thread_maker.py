@@ -1,6 +1,3 @@
-from token import Token
-
-
 def lexeme_thread_maker(raw_lexemes, identifiers_info, consts_info):
     identifiers = [sublist.text for sublist in identifiers_info]
     lexeme_thread = ''

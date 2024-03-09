@@ -1,9 +1,8 @@
 (define string-compare
   (lambda (str1 str2)
-    (cond
-      ((string= str1 str2) "Equal strings")
-      ((string< str1 str2) "First is less")
-      (t "First is greater"))))
+    (if (string= str1 str2) "Equal strings"
+      (if (string< str1 str2) "First is less"
+        "First is greater"))))
 
 (print (string-compare "minsk" "klimovichi"))
 (print (string-compare "belarus" "bsuir"))

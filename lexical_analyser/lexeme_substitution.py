@@ -1,6 +1,3 @@
-from token import Token
-
-
 def lexeme_substitution(token_list, identifiers_info, consts_info):
     for token in token_list:
         raw_lex = token.text
