@@ -11,6 +11,7 @@ class IdentifierType(Enum):
 class ExpressionNode:
     def __init__(self, nodes: list):
         self.nodes = nodes
+        self.return_type = None
 
     def __str__(self):
         return '[Expression node' + ', '.join(map(str, self.nodes)) + ']'
@@ -30,6 +31,7 @@ class ConstantNode:
         self.pos = token.pos
         self.text = token.text
         self.value = token.value
+        self.return_type = None
 
     def __str__(self):
         return f'[Constant node: pos: {self.pos}, text: {self.text}, value: {self.value}]'
@@ -43,6 +45,7 @@ class IdentifierNode:
         self.pos = token.pos
         self.text = token.text
         self.type = self.text_to_type(token.info)
+        self.return_type = None
 
     def __str__(self):
         return f'[Identifier node: pos: {self.pos}, text: {self.text}, type: {self.type.value}]'
