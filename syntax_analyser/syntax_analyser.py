@@ -1,6 +1,6 @@
 from tkinter import filedialog as fd
 from lexical_analyser.lexical_analyser import lexical_analyser
-from Nodes import ExpressionNode, IdentifierNode, ConstantNode
+from .Nodes import ExpressionNode, IdentifierNode, ConstantNode
 
 
 def to_list_with_str(instruction):
@@ -111,13 +111,10 @@ def syntax_analyser(code):
         print(e)
         return
     print('_______________________________________')
-    try:
-        result = syntax_analyser_internal(tokens)
-    except Exception as e:
-        print(e)
-        return
+    result = syntax_analyser_internal(tokens)
     for node in result:
         print_nodes(node)
+    return result
 
 
 if __name__ == "__main__":

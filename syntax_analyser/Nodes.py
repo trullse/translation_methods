@@ -12,6 +12,7 @@ class ExpressionNode:
     def __init__(self, nodes: list):
         self.nodes = nodes
         self.return_type = None
+        self.pos = self.nodes[0].pos
 
     def __str__(self):
         return '[Expression node' + ', '.join(map(str, self.nodes)) + ']'
@@ -34,10 +35,16 @@ class ConstantNode:
         self.return_type = None
 
     def __str__(self):
-        return f'[Constant node: pos: {self.pos}, text: {self.text}, value: {self.value}]'
+        temp = ''
+        if self.return_type is not None:
+            temp = f', returns: {self.return_type}'
+        return f'[Constant node: pos: {self.pos}, text: {self.text}, value: {self.value}{temp}]'
 
     def __repr__(self):
-        return f'[Constant node: pos: {self.pos}, text: {self.text}, value: {self.value}]'
+        temp = ''
+        if self.return_type is not None:
+            temp = f', returns: {self.return_type}'
+        return f'[Constant node: pos: {self.pos}, text: {self.text}, value: {self.value}{temp}]'
 
 
 class IdentifierNode:
@@ -48,10 +55,16 @@ class IdentifierNode:
         self.return_type = None
 
     def __str__(self):
-        return f'[Identifier node: pos: {self.pos}, text: {self.text}, type: {self.type.value}]'
+        temp = ''
+        if self.return_type is not None:
+            temp = f', returns: {self.return_type}'
+        return f'[Identifier node: pos: {self.pos}, text: {self.text}, type: {self.type.value}{temp}]'
 
     def __repr__(self):
-        return f'[Identifier node: pos: {self.pos}, text: {self.text}, type: {self.type.value}]'
+        temp = ''
+        if self.return_type is not None:
+            temp = f', returns: {self.return_type}'
+        return f'[Identifier node: pos: {self.pos}, text: {self.text}, type: {self.type.value}{temp}]'
 
     def text_to_type(self, info: str):
         if info in ('Logical symbol',
