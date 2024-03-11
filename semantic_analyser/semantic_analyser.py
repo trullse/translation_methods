@@ -25,7 +25,7 @@ def set_return_type(node, variables_scope):
             args_node.return_type = Types.LIST
             for arg_node in args_node.nodes:
                 # print(f'found {arg_node}')
-                if arg_node in variables_scope:
+                if arg_node.text in variables_scope:
                     raise Exception(f'Semantic error on line {arg_node.pos}: '
                                     f'Wrong parameters for function')
                 arg_node.return_type = Types.UNKNOWN
