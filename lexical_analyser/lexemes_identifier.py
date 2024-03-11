@@ -72,7 +72,8 @@ def lexemes_identifier(row_list):
     lexemes = []
     cur_index = 1
     is_prev_open_bracket = False
-    is_prev_lambda = False
+    # is_prev_lambda = False
+    is_in_func = False
     bracket = []
     token_list = []
 
@@ -89,14 +90,15 @@ def lexemes_identifier(row_list):
                 # raise Exception(f"Lexical error on line {el['line']}: Closing bracket before open one")
             elif cur_el == '(':
                 bracket.append(cur_el)
-                if not is_prev_lambda:
-                    is_prev_open_bracket = True
+                # if not is_prev_lambda:
+                is_prev_open_bracket = True
             else:
                 bracket.pop()
                 is_prev_open_bracket = False
+                is_in_func = False
             cur_index += 1
         else:
-            is_prev_lambda = False
+            # is_prev_lambda = False
 
             # if len(bracket) == 0:
             #     raise Exception(f"Lexical error on line {el['line']}: Instructions outside the brackets")
@@ -130,8 +132,8 @@ def lexemes_identifier(row_list):
                 lexemes.append(token)
                 token_list.append(token)
                 cur_index += 1
-                if cur_el == 'LAMBDA' or cur_el == 'lambda':
-                    is_prev_lambda = True
+                if cur_el == 'DEFUN' or cur_el == 'defun':
+                    is_in_func = True
             elif cur_el in OPERATORS.keys():
                 # if not is_prev_open_bracket:
                 #     raise Exception(f"Lexical error on line {el['line']}: Operator is not first word '{cur_el}'")
@@ -143,7 +145,8 @@ def lexemes_identifier(row_list):
             elif check_identifier(cur_el):
                 if cur_el not in [temp.text for temp in identifiers]:
                     match = check_match(cur_el, identifiers)
-                    if is_prev_open_bracket:
+                    # print(f'{cur_el} and is_prev_open_bracket={is_prev_open_bracket} and is_in_func={is_in_func}')
+                    if is_prev_open_bracket and not is_in_func:
                         raise Exception(f"Lexical error on line {el['line']}: '{cur_el}'. Do you mean using {match}?")
                     # lexemes.append([cur_index, cur_el, 'Identifier'])
                     token = Token(el['line'], cur_index, cur_el, 'Identifier')

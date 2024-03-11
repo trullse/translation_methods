@@ -14,9 +14,9 @@ class Types(Enum):
 
 KEY_WORDS = [
     {
-        'text': 'DEFINE',
+        'text': 'DEFVAR',
         'args_num': 2,
-        'args_types': [[Types.SYM,], [Types.NUM, Types.LIST, Types.BOOL, Types.LAMBDA, Types.STRING, Types.UNKNOWN]],
+        'args_types': [[Types.SYM,], [Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN]],
         'returns': None,
     },
     {
@@ -45,10 +45,10 @@ KEY_WORDS = [
         'returns': Types.UNKNOWN,
     },
     {
-        'text': 'LAMBDA',
-        'args_num': 2,
-        'args_types': [[Types.LIST,], [Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN]],
-        'returns': Types.LAMBDA,
+        'text': 'DEFUN',
+        'args_num': 3,
+        'args_types': [[Types.FUNCTION], [Types.LIST,], [Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN]],
+        'returns': None,
     },
     {
         'text': 'PRINT',

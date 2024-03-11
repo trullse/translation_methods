@@ -105,11 +105,7 @@ def syntax_analyser_internal(tokens):
 
 
 def syntax_analyser(code):
-    try:
-        tokens = lexical_analyser(code, True)
-    except Exception as e:
-        print(e)
-        return
+    tokens = lexical_analyser(code, True)
     print('_______________________________________')
     result = syntax_analyser_internal(tokens)
     for node in result:

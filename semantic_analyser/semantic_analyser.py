@@ -12,53 +12,62 @@ def is_num(string):
 
 
 def set_return_type(node, variables_scope):
-    print(variables_scope)
+    # print(variables_scope)
     if isinstance(node, ExpressionNode):
-        print('Expression! ' + str(node))
-        if node.nodes[0].text.upper() == 'LAMBDA':
-            print('Found lambda')
-            if len(node.nodes[1:]) != 2:
+        # print('Expression! ' + str(node))
+        if node.nodes[0].text.upper() == 'DEFUN':
+            # print('Found defun')
+            if len(node.nodes[1:]) != 3:
                 raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
-                                f'Wrong arguments count for lambda function')
-            args_node = node.nodes[1]
-            print(args_node)
+                                f'Wrong arguments count for defun function')
+            args_node = node.nodes[2]
+            # print(args_node)
+            args_node.return_type = Types.LIST
             for arg_node in args_node.nodes:
-                print(f'found {arg_node}')
+                # print(f'found {arg_node}')
                 if arg_node in variables_scope:
                     raise Exception(f'Semantic error on line {arg_node.pos}: '
-                                    f'Wrong arguments for lambda function')
+                                    f'Wrong parameters for function')
                 arg_node.return_type = Types.UNKNOWN
-                print(arg_node.return_type)
+                # print(arg_node.return_type)
                 variables_scope[arg_node.text] = [Types.UNKNOWN, ]
+            variables_scope[node.nodes[1].text] = [Types.FUNCTION, len(args_node.nodes)]
         for child_node in node.nodes:
             set_return_type(child_node, variables_scope.copy())
         if node.nodes[0].return_type == Types.FUNCTION:
-            print('Function')
+            # print('Function')
             found = False
             for word in KEY_WORDS:
                 if word['text'] == node.nodes[0].text.upper():
-                    print('Found built-in: ' + word['text'])
+                    # print('Found built-in: ' + word['text'])
                     args = node.nodes[1:]
-                    if len(args) != word['args_num']:
+                    if word['args_num'] is not None and len(args) != word['args_num']:
                         raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
                                         f'Wrong arguments count for function {node.nodes[0].text}')
                     for i in range(len(args)):
-                        if args[i].return_type not in word['args_types'][i]:
+                        if word['args_num'] is not None:
+                            args_types = word['args_types'][i]
+                        else:
+                            args_types = word['args_types'][0]
+                        if args[i].return_type not in args_types:
                             tmp = word['args_types'][i]
-                            print(f'Return type is {args[i].return_type} and it is not in {tmp}')
-                            raise Exception(f'Semantic error on line {args[i].pos}: '
-                                            f'Wrong arguments type for function {node.nodes[0].text}')
+                            # print(f'Return type is {args[i].return_type} and it is not in {tmp}')
+                            if args[i].return_type == Types.SYM:
+                                raise Exception(f'Semantic error on line {args[i].pos}: '
+                                                f'Undefined variable \'{args[i].text}\'')
+                            else:
+                                raise Exception(f'Semantic error on line {args[i].pos}: '
+                                                f'Wrong arguments type for function {node.nodes[0].text}')
                     # return type
                     node.return_type = word['returns']
                     # initialization check
-                    if word['text'] == 'SETQ' or word['text'] == 'DEFINE':
+                    if word['text'] == 'DEFVAR':
                         variable = node.nodes[1]
-                        if node.nodes[2].return_type == Types.LAMBDA:
-                            args_len = len(node.nodes[2].nodes[1].nodes)
-                            variables_scope[variable.text] = [Types.FUNCTION, args_len]
-                        else:
-                            variables_scope[variable.text] = [node.nodes[2].return_type, ]
-
+                        variables_scope[variable.text] = [node.nodes[2].return_type, ]
+                    elif word['text'] == 'SETQ':
+                        if node.nodes[1].text not in variables_scope:
+                            raise Exception(f'Semantic error on line {node.nodes[1].pos}: '
+                                            f'Undefined variable \'{node.nodes[1].text}\'')
                     found = True
                     break
             if not found:
@@ -68,7 +77,12 @@ def set_return_type(node, variables_scope):
                         args = node.nodes[1:]
                         if len(args) != func_info[1]:
                             raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
-                                            f'Wrong arguments count for function {node.nodes[0].text}')
+                                            f'Wrong arguments count for function {node.nodes[0].text}:'
+                                            f' expected {func_info[1]}, found {len(args)}')
+                        for i in range(len(args)):
+                            if args[i].return_type == Types.SYM:
+                                raise Exception(f'Semantic error on line {args[i].pos}: '
+                                                f'Undefined variable \'{args[i].text}\'')
                         # return type
                         node.return_type = Types.UNKNOWN
                         found = True
@@ -76,13 +90,15 @@ def set_return_type(node, variables_scope):
                         raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
                                         f'Variable can not be a function {node.nodes[0].text}')
         else:
-            node.return_type = Types.LIST
+            if node.return_type is None:
+                raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
+                                f'Variable can not be a function {node.nodes[0].text}')
     elif isinstance(node, ConstantNode):
         if is_num(node.value):
             node.return_type = Types.NUM
         else:
             node.return_type = Types.STRING
-        print('Constant! ' + str(node))
+        # print('Constant! ' + str(node))
     elif isinstance(node, IdentifierNode):
         ready = False
         for word in KEY_WORDS:
@@ -97,7 +113,7 @@ def set_return_type(node, variables_scope):
             except Exception as e:
                 if node.return_type is None:
                     node.return_type = Types.SYM
-        print('Identifier! ' + str(node))
+        # print('Identifier! ' + str(node))
 
 
 def semantic_analyser(root):
@@ -117,8 +133,12 @@ if __name__ == "__main__":
         print(e)
         exit(0)
     print('________________Semantic______________________')
-    print(root)
-    semantic_analyser(root)
-    print(root)
-    for node in root:
-        print_nodes(node)
+    # print(root)
+    try:
+        semantic_analyser(root)
+        print('Semantic analyse is done. Everything is ok.')
+    except Exception as e:
+        print(e)
+    # print(root)
+    # for node in root:
+    #     print_nodes(node)

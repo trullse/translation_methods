@@ -1,8 +1,6 @@
-(define list-sum 
-  (lambda (lst)
+(defun list-sum (lst)
     (if (empty lst)
       0
       (+ (car lst)
-         (list-sum (cdr lst))))))
-
+         (list-sum (cdr lst)))))
 (print (list-sum (list 1 2 3 4 5)))
