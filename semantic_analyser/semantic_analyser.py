@@ -1,6 +1,6 @@
 from tkinter import filedialog as fd
 from syntax_analyser.syntax_analyser import *
-from consts import *
+from .consts import *
 
 
 def is_num(string):
@@ -116,29 +116,25 @@ def set_return_type(node, variables_scope):
         # print('Identifier! ' + str(node))
 
 
-def semantic_analyser(root):
+def semantic_analyser_iternal(root):
     variables_scope = {}  # format:{ name: ['type', 'args_num'], }
     for node in root:
         set_return_type(node, variables_scope)
 
 
+def semantic_analyser(code):
+    root = syntax_analyser(code)
+    print('________________Semantic______________________')
+    semantic_analyser_iternal(root)
+    print('Semantic analyse is done. Everything is ok.')
+    return root
+
+
 if __name__ == "__main__":
     filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
-    root = []
     with open(filename, "r") as f:
         code = f.read()
     try:
-        root = syntax_analyser(code)
+        semantic_analyser(code)
     except Exception as e:
         print(e)
-        exit(0)
-    print('________________Semantic______________________')
-    # print(root)
-    try:
-        semantic_analyser(root)
-        print('Semantic analyse is done. Everything is ok.')
-    except Exception as e:
-        print(e)
-    # print(root)
-    # for node in root:
-    #     print_nodes(node)
