@@ -1,0 +1,6 @@
+(defvar a 8)
+(defvar b 8)
+
+(print (if (> a b) "First greater"
+            (if (< a b) "Second greater"
+                "Equal")))

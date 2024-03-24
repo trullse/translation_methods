@@ -40,6 +40,30 @@ def list_func(env, *args):
     return args
 
 
+def greater_func(env, a, b):
+    a = check_num(a)
+    b = check_num(b)
+    if a is None or b is None:
+        raise Exception('Wrong arguments for \'>\' function')
+    return a > b
+
+
+def less_func(env, a, b):
+    a = check_num(a)
+    b = check_num(b)
+    if a is None or b is None:
+        raise Exception('Wrong arguments for \'<\' function')
+    return a < b
+
+
+def equal_func(env, a, b):
+    a = check_num(a)
+    b = check_num(b)
+    if a is None or b is None:
+        raise Exception('Wrong arguments for \'=\' function')
+    return a == b
+
+
 INTERNAL_FUNCTIONS = {
     'NIL': 'Logical symbol',
     'T': 'Logical symbol',
@@ -47,7 +71,7 @@ INTERNAL_FUNCTIONS = {
     # 'DEFVAR': 'Keyword',
     'SETQ': 'Keyword',
     'LIST': list_func,
-    'IF': 'Keyword',
+    # 'IF': 'Keyword',
     'COND': 'Keyword',
     'PRINT': print_func,
     'CAR': 'Keyword',
@@ -57,6 +81,9 @@ INTERNAL_FUNCTIONS = {
     '-': minus,
     '*': 'Arithmetic operator',
     '/': 'Arithmetic operator',
+    '>': greater_func,
+    '<': less_func,
+    '=': equal_func,
     'MOD': 'Arithmetic function',
     'INCF': 'Arithmetic function',
     'DECF': 'Arithmetic function',

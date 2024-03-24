@@ -99,6 +99,24 @@ KEY_WORDS = [
         'returns': Types.NUM,
     },
     {
+        'text': '>',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.BOOL,
+    },
+    {
+        'text': '<',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.BOOL,
+    },
+    {
+        'text': '=',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.BOOL,
+    },
+    {
         'text': 'MOD',
         'args_num': 2,
         'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],

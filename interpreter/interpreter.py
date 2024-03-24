@@ -47,7 +47,12 @@ def prepare_if(environment, node):
     if_condition = node.nodes[1]
     true_case = node.nodes[2]
     false_case = node.nodes[3]
-    pass
+
+    if_result = evaluate(if_condition, environment)
+    if if_result:
+        return evaluate(true_case, environment)
+    else:
+        return evaluate(false_case, environment)
 
 
 def evaluate(node, environment):
@@ -66,7 +71,7 @@ def evaluate(node, environment):
         elif function_name == 'DEFUN':
             prepare_defun(environment, node)
         elif function_name == 'IF':
-            pass
+            return prepare_if(environment, node)
         else:
             func = environment.get(function_name)
             args = node.nodes[1:]
