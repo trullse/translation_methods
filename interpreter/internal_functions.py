@@ -30,8 +30,13 @@ def minus(env, a, b):
 
 
 def print_func(env, value):
-    if not (isinstance(value, str) or isinstance(value, int) or isinstance(value, float)):
-        raise Exception('Wrong arguments for \'print\' function')
+    if isinstance(value, bool):
+        print('T' if value is True else 'NIL')
+    if isinstance(value, list):
+        if len(value) == 0:
+            print('NIL')
+        print('(' + ' '.join(value) + ')')
+
     print(value)
     return value
 
@@ -88,6 +93,32 @@ def str_less_or_equal_func(env, a, b):
     return a <= b
 
 
+def car_func(env, value):
+    if isinstance(value, list):
+        raise Exception('Wrong argument for \'car\' function')
+    try:
+        res = value[0]
+    except IndexError:
+        res = False
+    return res
+
+
+def cdr_func(env, value):
+    if isinstance(value, list):
+        raise Exception('Wrong argument for \'cdr\' function')
+    try:
+        res = value[1:]
+    except IndexError:
+        res = False
+    return res
+
+
+def empty_func(env, value):
+    if isinstance(value, list):
+        raise Exception('Wrong argument for \'empty\' function')
+    return len(value) == 0
+
+
 INTERNAL_FUNCTIONS = {
     # 'NIL': 'Logical symbol',
     # 'T': 'Logical symbol',
@@ -98,9 +129,9 @@ INTERNAL_FUNCTIONS = {
     # 'IF': 'Keyword',
     'COND': 'Keyword',
     'PRINT': print_func,
-    'CAR': 'Keyword',
-    'CDR': 'Keyword',
-    'EMPTY': 'Keyword',
+    'CAR': car_func,
+    'CDR': cdr_func,
+    'EMPTY': empty_func,
     '+': plus,
     '-': minus,
     '*': 'Arithmetic operator',
