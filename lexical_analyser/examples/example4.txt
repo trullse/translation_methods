@@ -1,0 +1,4 @@
+(defun triple-sum (a b c)
+    (+ (+ a b) c))
+
+(print (triple-sum 1 2 3))
