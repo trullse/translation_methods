@@ -4,6 +4,8 @@ from .consts import *
 
 
 def is_num(string):
+    if isinstance(string, bool):
+        return False
     try:
         float(string)
         return True
@@ -51,7 +53,8 @@ def set_return_type(node, variables_scope):
                             args_types = word['args_types'][0]
                         if args[i].return_type not in args_types:
                             tmp = word['args_types'][i]
-                            # print(f'Return type is {args[i].return_type} and it is not in {tmp}')
+                            print(f'Arg: {args[i].text} {args[i].value} {args[i].return_type}')
+                            print(f'Return type is {args[i].return_type} and it is not in {tmp}')
                             if args[i].return_type == Types.SYM:
                                 raise Exception(f'Semantic error on line {args[i].pos}: '
                                                 f'Undefined variable \'{args[i].text}\'')
@@ -96,6 +99,8 @@ def set_return_type(node, variables_scope):
     elif isinstance(node, ConstantNode):
         if is_num(node.value):
             node.return_type = Types.NUM
+        elif isinstance(node.value, bool):
+            node.return_type = Types.BOOL
         else:
             node.return_type = Types.STRING
         # print('Constant! ' + str(node))

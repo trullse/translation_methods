@@ -123,6 +123,14 @@ def lexemes_identifier(row_list):
                 consts.append(token)
                 token_list.append(token)
                 cur_index += 1
+            elif cur_el.upper() == 'T' or cur_el.upper() == 'NIL':
+                value = True if cur_el.upper() == 'T' else False
+                token = Token(el['line'], cur_index, cur_el.upper(), 'Bool constant', value)
+                lexemes.append(token)
+                # consts.append([cur_index, cur_el, 'String constant'])
+                consts.append(token)
+                token_list.append(token)
+                cur_index += 1
 
             elif cur_el in KEY_WORDS.keys():
                 # if not is_prev_open_bracket:
