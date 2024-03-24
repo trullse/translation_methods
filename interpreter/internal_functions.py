@@ -64,9 +64,33 @@ def equal_func(env, a, b):
     return a == b
 
 
+def str_greater_func(env, a, b):
+    return a > b
+
+
+def str_less_func(env, a, b):
+    return a < b
+
+
+def str_equal_func(env, a, b):
+    return a == b
+
+
+def str_not_equal_func(env, a, b):
+    return a != b
+
+
+def str_greater_or_equal_func(env, a, b):
+    return a >= b
+
+
+def str_less_or_equal_func(env, a, b):
+    return a <= b
+
+
 INTERNAL_FUNCTIONS = {
-    'NIL': 'Logical symbol',
-    'T': 'Logical symbol',
+    # 'NIL': 'Logical symbol',
+    # 'T': 'Logical symbol',
     # 'DEFUN': 'Keyword',
     # 'DEFVAR': 'Keyword',
     'SETQ': 'Keyword',
@@ -87,10 +111,10 @@ INTERNAL_FUNCTIONS = {
     'MOD': 'Arithmetic function',
     'INCF': 'Arithmetic function',
     'DECF': 'Arithmetic function',
-    'STRING=': 'String operator',
-    'STRING/=': 'String operator',
-    'STRING>': 'String operator',
-    'STRING<': 'String operator',
-    'STRING>=': 'String operator',
-    'STRING<=': 'String operator',
+    'STRING=': str_equal_func,
+    'STRING/=': str_not_equal_func,
+    'STRING>': str_less_func,
+    'STRING<': str_greater_func,
+    'STRING>=': str_greater_or_equal_func,
+    'STRING<=': str_less_or_equal_func,
 }
