@@ -1,4 +1,4 @@
-# from interpreter.interpreter import evaluate
+from interpreter import Environment
 
 
 def check_num(value):
@@ -33,7 +33,7 @@ def multiply(env, a, b):
     a = check_num(a)
     b = check_num(b)
     if a is None or b is None:
-        raise Exception('Wrong arguments for \'+\' function')
+        raise Exception('Wrong arguments for \'*\' function')
     return a * b
 
 
@@ -41,9 +41,20 @@ def divide(env, a, b):
     a = check_num(a)
     b = check_num(b)
     if a is None or b is None:
-        raise Exception('Wrong arguments for \'+\' function')
+        raise Exception('Wrong arguments for \'/\' function')
     try:
         return a / b
+    except ZeroDivisionError:
+        raise Exception('Division by zero')
+
+
+def mod(env, a, b):
+    a = check_num(a)
+    b = check_num(b)
+    if a is None or b is None:
+        raise Exception('Wrong arguments for \'MOD\' function')
+    try:
+        return a % b
     except ZeroDivisionError:
         raise Exception('Division by zero')
 
@@ -139,7 +150,6 @@ def empty_func(env, value):
 
 
 INTERNAL_FUNCTIONS = {
-    'SETQ': 'Keyword',
     'LIST': list_func,
     'PRINT': print_func,
     'CAR': car_func,
@@ -152,9 +162,7 @@ INTERNAL_FUNCTIONS = {
     '>': greater_func,
     '<': less_func,
     '=': equal_func,
-    'MOD': 'Arithmetic function',
-    'INCF': 'Arithmetic function',
-    'DECF': 'Arithmetic function',
+    'MOD': mod,
     'STRING=': str_equal_func,
     'STRING/=': str_not_equal_func,
     'STRING>': str_less_func,

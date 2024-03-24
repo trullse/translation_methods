@@ -1,3 +1,4 @@
 (defvar a 5)
 (defvar b 6)
-(print (+ a b))
+(setq b 1)
+(print (* a b))

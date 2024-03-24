@@ -68,6 +68,8 @@ def evaluate(node, environment):
         args = node.nodes[1:]
         if function_name == 'DEFVAR':
             environment.set(args[0].text, evaluate(args[1], environment))
+        elif function_name == 'SETQ':
+            environment.set(args[0].text, evaluate(args[1], environment))
         elif function_name == 'DEFUN':
             prepare_defun(environment, node)
         elif function_name == 'IF':
@@ -79,7 +81,7 @@ def evaluate(node, environment):
             try:
                 return func(environment, *args_evalueted)
             except Exception as e:
-                raise Exception(f'Runtime error at line {node.nodes[0].pos}: Wrong arguments')
+                raise Exception(f'Runtime error at line {node.nodes[0].pos}: {e}')
             pass
     else:
         raise Exception('Runtime undefined error')
@@ -97,7 +99,7 @@ if __name__ == "__main__":
         code = f.read()
     try:
         root = semantic_analyser(code)
+        print('________________Interpreter______________________')
+        interpret_internal(root)
     except Exception as e:
         print(e)
-    print('________________Interpreter______________________')
-    interpret_internal(root)

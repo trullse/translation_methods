@@ -30,8 +30,6 @@ OPERATORS = {
     '*': 'Arithmetic operator',
     '/': 'Arithmetic operator',
     'mod': 'Arithmetic function',
-    'incf': 'Arithmetic function',
-    'decf': 'Arithmetic function',
     '>': 'Arithmetic operator',
     '<': 'Arithmetic operator',
     '=': 'Arithmetic operator',

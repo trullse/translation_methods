@@ -123,18 +123,6 @@ KEY_WORDS = [
         'returns': Types.NUM,
     },
     {
-        'text': 'INCF',
-        'args_num': 2,
-        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
-        'returns': Types.NUM,
-    },
-    {
-        'text': 'DECF',
-        'args_num': 2,
-        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
-        'returns': Types.NUM,
-    },
-    {
         'text': 'STRING=',
         'args_num': 2,
         'args_types': [[Types.STRING, Types.UNKNOWN], [Types.STRING, Types.UNKNOWN]],
