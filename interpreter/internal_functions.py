@@ -29,6 +29,25 @@ def minus(env, a, b):
     return a - b
 
 
+def multiply(env, a, b):
+    a = check_num(a)
+    b = check_num(b)
+    if a is None or b is None:
+        raise Exception('Wrong arguments for \'+\' function')
+    return a * b
+
+
+def divide(env, a, b):
+    a = check_num(a)
+    b = check_num(b)
+    if a is None or b is None:
+        raise Exception('Wrong arguments for \'+\' function')
+    try:
+        return a / b
+    except ZeroDivisionError:
+        raise Exception('Division by zero')
+
+
 def print_func(env, value):
     if isinstance(value, bool):
         print('T' if value is True else 'NIL')
@@ -120,22 +139,16 @@ def empty_func(env, value):
 
 
 INTERNAL_FUNCTIONS = {
-    # 'NIL': 'Logical symbol',
-    # 'T': 'Logical symbol',
-    # 'DEFUN': 'Keyword',
-    # 'DEFVAR': 'Keyword',
     'SETQ': 'Keyword',
     'LIST': list_func,
-    # 'IF': 'Keyword',
-    'COND': 'Keyword',
     'PRINT': print_func,
     'CAR': car_func,
     'CDR': cdr_func,
     'EMPTY': empty_func,
     '+': plus,
     '-': minus,
-    '*': 'Arithmetic operator',
-    '/': 'Arithmetic operator',
+    '*': multiply,
+    '/': divide,
     '>': greater_func,
     '<': less_func,
     '=': equal_func,
