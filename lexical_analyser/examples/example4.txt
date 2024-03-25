@@ -1,4 +1,9 @@
 (defun triple-sum (a b c)
     (+ (+ a b) c))
 
-(print (triple-sum 1 2 3))
+(defun stri (c d)
+    (if (string= c d) "Equal strings"
+      (if (string< c d) "First is less"
+        "First is greater")))
+
+(print (triple-sum 1 (stri "a" "b") 3))

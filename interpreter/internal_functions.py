@@ -1,25 +1,44 @@
 from interpreter import Environment
 
+def get_num(value):
+    if isinstance(value, int) or isinstance(value, float):
+        return value
+    try:
+        return int(value)
+    except Exception as e:
+        try:
+            return float(value)
+        except Exception as e:
+            return None
+
 
 def plus(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'+\' function')
     return a + b
 
 
 def minus(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'-\' function')
     return a - b
 
 
 def multiply(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'*\' function')
     return a * b
 
 
 def divide(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'/\' function')
     try:
@@ -29,6 +48,8 @@ def divide(env, a, b):
 
 
 def mod(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'MOD\' function')
     try:
@@ -54,18 +75,24 @@ def list_func(env, *args):
 
 
 def greater_func(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'>\' function')
     return a > b
 
 
 def less_func(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'<\' function')
     return a < b
 
 
 def equal_func(env, a, b):
+    a = get_num(a)
+    b = get_num(b)
     if a is None or b is None:
         raise Exception('Wrong arguments for \'=\' function')
     return a == b

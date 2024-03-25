@@ -54,7 +54,7 @@ KEY_WORDS = [
         'text': 'PRINT',
         'args_num': 1,
         'args_types': [[Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN]],
-        'returns': None,
+        'returns': Types.UNKNOWN,
     },
     {
         'text': 'CAR',
