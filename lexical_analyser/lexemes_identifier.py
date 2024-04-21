@@ -17,9 +17,11 @@ def get_num(value):
 
 def check_num(element: str):
     if not element[0].isdigit():
-        return False
-    if element[0] == '-' and not element[2].isdigit():
-        return False
+        if len(element) > 1 and element[0] == '-':
+            if not element[1].isdigit():
+                return False
+        else:
+            return False
     is_float = False
     for i in range(len(element)):
         if i == 0:
