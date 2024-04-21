@@ -22,6 +22,8 @@ KEY_WORDS = {
     'CDR': 'Keyword',
     'empty': 'Keyword',
     'EMPTY': 'Keyword',
+    'length': 'Keyword',
+    'LENGTH': 'Keyword',
     'push': 'Keyword',
     'PUSH': 'Keyword',
     'progn': 'Keyword',

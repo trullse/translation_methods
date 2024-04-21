@@ -164,6 +164,12 @@ def empty_func(env, value):
     return len(value) == 0
 
 
+def len_func(env, value):
+    if not isinstance(value, list):
+        raise Exception('Wrong argument for \'length\' function')
+    return len(value)
+
+
 def push_func(env, lst, value):
     if not isinstance(lst, list):
         raise Exception('Wrong argument for \'push\' function')
@@ -177,6 +183,7 @@ INTERNAL_FUNCTIONS = {
     'CAR': car_func,
     'CDR': cdr_func,
     'EMPTY': empty_func,
+    'LENGTH': len_func,
     'PUSH': push_func,
     '+': plus,
     '-': minus,

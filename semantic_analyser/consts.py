@@ -75,6 +75,12 @@ KEY_WORDS = [
         'returns': Types.BOOL,
     },
     {
+        'text': 'LENGTH',
+        'args_num': 1,
+        'args_types': [[Types.LIST, Types.UNKNOWN]],
+        'returns': Types.NUM,
+    },
+    {
         'text': 'PUSH',
         'args_num': 2,
         'args_types': [[Types.LIST, Types.UNKNOWN], [Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN]],
