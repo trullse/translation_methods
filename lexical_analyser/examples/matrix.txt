@@ -1,0 +1,26 @@
+(defun nth-element (lst index)
+    (if (= index 0)
+        (car lst)
+        (nth-element (cdr lst) (- index 1))))
+
+(defvar matrix1 (list (list 1 0 5) (list 3 7 2) (list 4 3 5)))
+(defvar matrix2 (list (list 5 4 3) (list 0 1 5) (list 3 2 1)))
+
+(defvar tr-matrix1 (list))
+
+(defvar i 0)
+(defvar j 0)
+(defun dot-matrix (m1 m2 max-ind ind row row-ind res)
+    (if (= ind max-ind)
+        (push res row)
+        (progn
+            (setq i (truncate ind 3))
+            (setq j (mod ind 3))
+            (if (i > row-ind)
+                (progn
+                    (setq res (push res row))
+                    (setq row-ind i)
+                    (setq row (list))
+                    ()
+
+(print (dot-matrix matrix1 matrix2 27 4 (list) 0 (list)))

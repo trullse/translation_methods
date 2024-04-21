@@ -31,7 +31,7 @@ KEY_WORDS = [
     {
         'text': 'LIST',
         'args_num': None,
-        'args_types': [[Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN],],
+        'args_types': [[Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN, Types.LIST],],
         'returns': Types.LIST,
      },
     {
@@ -75,6 +75,18 @@ KEY_WORDS = [
         'returns': Types.BOOL,
     },
     {
+        'text': 'PUSH',
+        'args_num': 2,
+        'args_types': [[Types.LIST, Types.UNKNOWN], [Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN]],
+        'returns': Types.LIST,
+    },
+    {
+        'text': 'PROGN',
+        'args_num': None,
+        'args_types': [[Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN, None]],
+        'returns': Types.UNKNOWN,
+    },
+    {
         'text': '+',
         'args_num': 2,
         'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
@@ -94,6 +106,12 @@ KEY_WORDS = [
     },
     {
         'text': '/',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.NUM,
+    },
+    {
+        'text': 'TRUNCATE',
         'args_num': 2,
         'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
         'returns': Types.NUM,

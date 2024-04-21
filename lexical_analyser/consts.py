@@ -22,6 +22,12 @@ KEY_WORDS = {
     'CDR': 'Keyword',
     'empty': 'Keyword',
     'EMPTY': 'Keyword',
+    'push': 'Keyword',
+    'PUSH': 'Keyword',
+    'progn': 'Keyword',
+    'PROGN': 'Keyword',
+    'truncate': 'Keyword',
+    'TRUNCATE': 'Keyword',
 }
 
 OPERATORS = {

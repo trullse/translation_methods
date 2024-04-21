@@ -74,6 +74,11 @@ def evaluate(node, environment):
             prepare_defun(environment, node)
         elif function_name == 'IF':
             return prepare_if(environment, node)
+        elif function_name == 'PROGN':
+            for i in range(len(args)):
+                if i == len(args) - 1:
+                    return evaluate(args[i], environment)
+                evaluate(args[i], environment)
         else:
             func = environment.get(function_name)
             args = node.nodes[1:]
@@ -97,9 +102,9 @@ if __name__ == "__main__":
     filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
     with open(filename, "r") as f:
         code = f.read()
-    try:
-        root = semantic_analyser(code)
-        print('________________Interpreter______________________')
-        interpret_internal(root)
-    except Exception as e:
-        print(e)
+    # try:
+    root = semantic_analyser(code)
+    print('________________Interpreter______________________')
+    interpret_internal(root)
+    # except Exception as e:
+    #     print(e)
