@@ -182,4 +182,10 @@ KEY_WORDS = [
         'args_types': [[Types.STRING, Types.UNKNOWN], [Types.STRING, Types.UNKNOWN]],
         'returns': Types.BOOL,
     },
+    {
+        'text': 'LOAD',
+        'args_num': 1,
+        'args_types': [[Types.STRING]],
+        'returns': None,
+    },
 ]

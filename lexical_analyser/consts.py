@@ -30,6 +30,8 @@ KEY_WORDS = {
     'PROGN': 'Keyword',
     'truncate': 'Keyword',
     'TRUNCATE': 'Keyword',
+    'load': 'KW',
+    'LOAD': 'KW',
 }
 
 OPERATORS = {

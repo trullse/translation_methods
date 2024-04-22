@@ -1,0 +1,3 @@
+(load "example.txt")
+
+(print (fact 5))

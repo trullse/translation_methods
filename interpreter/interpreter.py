@@ -74,6 +74,8 @@ def evaluate(node, environment):
             prepare_defun(environment, node)
         elif function_name == 'IF':
             return prepare_if(environment, node)
+        elif function_name == 'LOAD':
+
         elif function_name == 'PROGN':
             for i in range(len(args)):
                 if i == len(args) - 1:
