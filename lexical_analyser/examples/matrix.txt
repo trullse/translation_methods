@@ -102,4 +102,4 @@
                  )
 )
 
-(print (dot-matrix matrix1 matrix2))
+;(print (dot-matrix matrix1 matrix2))

@@ -1,0 +1,14 @@
+(load "matrix.txt")
+
+(defvar matrix1 (list (list 1 0 5)
+                      (list 3 7 -2)
+                      (list 4 3 5)
+                )
+)
+(defvar matrix2 (list (list 5 4 3)
+                      (list 0 1 5)
+                      (list 3 -2 1)
+                 )
+)
+
+(print (dot-matrix matrix1 matrix2))

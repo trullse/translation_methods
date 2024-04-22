@@ -59,8 +59,9 @@ def set_return_type(node, variables_scope):
                                 raise Exception(f'Semantic error on line {args[i].pos}: '
                                                 f'Undefined variable \'{args[i].text}\'')
                             else:
-                                raise Exception(f'Semantic error on line {args[i].pos}: '
-                                                f'Wrong arguments type for function {node.nodes[0].text}')
+                                pass
+                                # raise Exception(f'Semantic error on line {args[i].pos}: '
+                                #                 f'Wrong arguments type for function {node.nodes[0].text}')
                     # return type
                     node.return_type = word['returns']
                     # initialization check
@@ -94,8 +95,9 @@ def set_return_type(node, variables_scope):
                                         f'Variable can not be a function {node.nodes[0].text}')
         else:
             if node.return_type is None:
-                raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
-                                f'Variable can not be a function {node.nodes[0].text}')
+                pass
+                # raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
+                #                 f'Variable can not be a function {node.nodes[0].text}')
     elif isinstance(node, ConstantNode):
         if is_num(node.value):
             node.return_type = Types.NUM

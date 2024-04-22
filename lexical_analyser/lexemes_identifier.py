@@ -168,8 +168,8 @@ def lexemes_identifier(row_list):
                 if cur_el not in [temp.text for temp in identifiers]:
                     match = check_match(cur_el, identifiers)
                     # print(f'{cur_el} and is_prev_open_bracket={is_prev_open_bracket} and is_in_func={is_in_func}')
-                    if is_prev_open_bracket and not is_in_func:
-                        raise Exception(f"Lexical error on line {el['line']}: '{cur_el}'. Do you mean using {match}?")
+                    # if is_prev_open_bracket and not is_in_func:
+                    #     raise Exception(f"Lexical error on line {el['line']}: '{cur_el}'. Do you mean using {match}?")
                     # lexemes.append([cur_index, cur_el, 'Identifier'])
                     token = Token(el['line'], cur_index, cur_el, 'Identifier')
                     lexemes.append(token)
