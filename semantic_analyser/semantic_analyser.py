@@ -1,9 +1,11 @@
 from tkinter import filedialog as fd
 from syntax_analyser.syntax_analyser import *
-from consts import *
+from .consts import *
 
 
 def is_num(string):
+    if isinstance(string, bool):
+        return False
     try:
         float(string)
         return True
@@ -25,9 +27,9 @@ def set_return_type(node, variables_scope):
             args_node.return_type = Types.LIST
             for arg_node in args_node.nodes:
                 # print(f'found {arg_node}')
-                if arg_node.text in variables_scope:
-                    raise Exception(f'Semantic error on line {arg_node.pos}: '
-                                    f'Wrong parameters for function')
+                # if arg_node.text in variables_scope:
+                #     raise Exception(f'Semantic error on line {arg_node.pos}: '
+                #                     f'Wrong parameters for function {node.nodes[0].text}')
                 arg_node.return_type = Types.UNKNOWN
                 # print(arg_node.return_type)
                 variables_scope[arg_node.text] = [Types.UNKNOWN, ]
@@ -43,7 +45,7 @@ def set_return_type(node, variables_scope):
                     args = node.nodes[1:]
                     if word['args_num'] is not None and len(args) != word['args_num']:
                         raise Exception(f'Semantic error on line {node.nodes[0].pos}: '
-                                        f'Wrong arguments count for function {node.nodes[0].text}')
+                                        f'Wrong arguments count for function')
                     for i in range(len(args)):
                         if word['args_num'] is not None:
                             args_types = word['args_types'][i]
@@ -51,7 +53,8 @@ def set_return_type(node, variables_scope):
                             args_types = word['args_types'][0]
                         if args[i].return_type not in args_types:
                             tmp = word['args_types'][i]
-                            # print(f'Return type is {args[i].return_type} and it is not in {tmp}')
+                            # print(f'Arg: {args[i].text} {args[i].value} {args[i].return_type}')
+                            print(f'Return type is {args[i].return_type} and it is not in {tmp}')
                             if args[i].return_type == Types.SYM:
                                 raise Exception(f'Semantic error on line {args[i].pos}: '
                                                 f'Undefined variable \'{args[i].text}\'')
@@ -96,6 +99,8 @@ def set_return_type(node, variables_scope):
     elif isinstance(node, ConstantNode):
         if is_num(node.value):
             node.return_type = Types.NUM
+        elif isinstance(node.value, bool):
+            node.return_type = Types.BOOL
         else:
             node.return_type = Types.STRING
         # print('Constant! ' + str(node))
@@ -116,29 +121,25 @@ def set_return_type(node, variables_scope):
         # print('Identifier! ' + str(node))
 
 
-def semantic_analyser(root):
+def semantic_analyser_iternal(root):
     variables_scope = {}  # format:{ name: ['type', 'args_num'], }
     for node in root:
         set_return_type(node, variables_scope)
 
 
+def semantic_analyser(code):
+    root = syntax_analyser(code)
+    print('________________Semantic______________________')
+    semantic_analyser_iternal(root)
+    print('Semantic analyse is done. Everything is ok.')
+    return root
+
+
 if __name__ == "__main__":
     filename = fd.askopenfilename(filetypes=(('txt files', '*.txt'),))
-    root = []
     with open(filename, "r") as f:
         code = f.read()
     try:
-        root = syntax_analyser(code)
+        semantic_analyser(code)
     except Exception as e:
         print(e)
-        exit(0)
-    print('________________Semantic______________________')
-    # print(root)
-    try:
-        semantic_analyser(root)
-        print('Semantic analyse is done. Everything is ok.')
-    except Exception as e:
-        print(e)
-    # print(root)
-    # for node in root:
-    #     print_nodes(node)

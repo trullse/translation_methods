@@ -1,6 +1,11 @@
+(defun fact (num)
+    (if (= num 0)
+        1
+        (* num (fact (- num 1)))))
+
 (defun list-sum (lst)
     (if (empty lst)
       0
       (+ (car lst)
          (list-sum (cdr lst)))))
-(print (list-sum (list 1 2 3 4 5)))
+(print (list-sum (list 1 2 3 4 (fact 5))))

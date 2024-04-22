@@ -1,3 +1,4 @@
 (defvar a 5)
-(defvar b 6)
-(+ a b)
+(defvar b 9)
+(print (* a b))
+(print (truncate b a))

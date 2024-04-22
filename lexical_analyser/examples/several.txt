@@ -1,0 +1,7 @@
+(defun func (a b)
+    (progn
+        (print a)
+        (print b)
+        (print (+ a b))))
+
+(print (func 5 6))

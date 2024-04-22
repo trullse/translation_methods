@@ -31,7 +31,7 @@ KEY_WORDS = [
     {
         'text': 'LIST',
         'args_num': None,
-        'args_types': [[Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN],],
+        'args_types': [[Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN, Types.LIST],],
         'returns': Types.LIST,
      },
     {
@@ -54,7 +54,7 @@ KEY_WORDS = [
         'text': 'PRINT',
         'args_num': 1,
         'args_types': [[Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN]],
-        'returns': None,
+        'returns': Types.UNKNOWN,
     },
     {
         'text': 'CAR',
@@ -73,6 +73,24 @@ KEY_WORDS = [
         'args_num': 1,
         'args_types': [[Types.LIST, Types.UNKNOWN]],
         'returns': Types.BOOL,
+    },
+    {
+        'text': 'LENGTH',
+        'args_num': 1,
+        'args_types': [[Types.LIST, Types.UNKNOWN]],
+        'returns': Types.NUM,
+    },
+    {
+        'text': 'PUSH',
+        'args_num': 2,
+        'args_types': [[Types.LIST, Types.UNKNOWN], [Types.NUM, Types.BOOL, Types.STRING, Types.SYM, Types.UNKNOWN]],
+        'returns': Types.LIST,
+    },
+    {
+        'text': 'PROGN',
+        'args_num': None,
+        'args_types': [[Types.NUM, Types.LIST, Types.BOOL, Types.STRING, Types.UNKNOWN, None]],
+        'returns': Types.UNKNOWN,
     },
     {
         'text': '+',
@@ -99,19 +117,31 @@ KEY_WORDS = [
         'returns': Types.NUM,
     },
     {
+        'text': 'TRUNCATE',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.NUM,
+    },
+    {
+        'text': '>',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.BOOL,
+    },
+    {
+        'text': '<',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.BOOL,
+    },
+    {
+        'text': '=',
+        'args_num': 2,
+        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
+        'returns': Types.BOOL,
+    },
+    {
         'text': 'MOD',
-        'args_num': 2,
-        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
-        'returns': Types.NUM,
-    },
-    {
-        'text': 'INCF',
-        'args_num': 2,
-        'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
-        'returns': Types.NUM,
-    },
-    {
-        'text': 'DECF',
         'args_num': 2,
         'args_types': [[Types.NUM, Types.UNKNOWN], [Types.NUM, Types.UNKNOWN]],
         'returns': Types.NUM,

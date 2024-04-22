@@ -1,0 +1,105 @@
+(defun nth-element (lst index)
+    (if (= index 0)
+        (car lst)
+        (nth-element (cdr lst) (- index 1))
+    )
+)
+
+(defun matrix-element (lst index-i index-j)
+    (nth-element (nth-element lst index-i) index-j)
+)
+
+(defvar i 0)
+(defvar j 0)
+(defun transpose-internal (matrix height size index current-row cur-row-j result)
+    (if (= index size)
+        (push result current-row)
+        (progn
+            (setq j (truncate index height))
+            (setq i (mod index height))
+            (if (> j cur-row-j)
+                (progn
+                    (setq result (push result current-row))
+                    (setq cur-row-j j)
+                    (setq current-row (list))
+                )
+                (+ 0 0)
+            )
+            (setq current-row (push current-row (matrix-element matrix i j)))
+            (transpose-internal matrix height size (+ index 1) current-row cur-row-j result)
+        )
+    )
+)
+
+(defun transpose (matrix-1)
+    (transpose-internal
+        matrix-1
+        (length matrix-1)
+        (* (length matrix-1) (length (nth-element matrix-1 0)))
+        0
+        (list)
+        0
+        (list)
+    )
+)
+
+(defun sum-of-mult (row1 row2 sum ind max)
+    (if (= ind max)
+        sum
+        (progn
+            (setq sum (+ sum (* (nth-element row1 ind) (nth-element row2 ind))))
+            (sum-of-mult row1 row2 sum (+ ind 1) max)
+        )
+    )
+)
+
+(defvar cur-row (list))
+(defvar cur-col (list))
+
+(defun dot-matrix-internal (m1 m2 max-ind row-length ind row row-ind res)
+    (if (= ind max-ind) ; if the end
+        (push res row)  ; return result matrix
+        (progn
+            (setq i (truncate ind row-length))
+            (setq j (mod ind row-length))
+            (if (> i row-ind)   ; if the row index changes
+                (progn
+                    (setq res (push res row))  ; add into result matrix
+                    (setq row-ind i)
+                    (setq row (list))
+                )
+                (+ 0 0)
+            )
+            (setq cur-row (nth-element m1 i))
+            (setq cur-col (nth-element m2 j))
+            (setq row (push row (sum-of-mult cur-row cur-col 0 0 row-length)))
+            (dot-matrix-internal m1 m2 max-ind row-length (+ ind 1) row row-ind res)
+        )
+    )
+)
+
+(defun dot-matrix (mat1 mat2)
+    (dot-matrix-internal
+        mat1
+        (transpose mat2)
+        (* (length mat1) (length mat2))
+        (length mat2)
+        0
+        (list)
+        0
+        (list)
+    )
+)
+
+(defvar matrix1 (list (list 1 0 5)
+                      (list 3 7 -2)
+                      (list 4 3 5)
+                )
+)
+(defvar matrix2 (list (list 5 4 3)
+                      (list 0 1 5)
+                      (list 3 -2 1)
+                 )
+)
+
+(print (dot-matrix matrix1 matrix2))

@@ -3,11 +3,25 @@ from prettytable import PrettyTable
 from lexical_analyser.token import Token
 
 
+def get_num(value):
+    if isinstance(value, int) or isinstance(value, float):
+        return value
+    try:
+        return int(value)
+    except Exception as e:
+        try:
+            return float(value)
+        except Exception as e:
+            return None
+
+
 def check_num(element: str):
     if not element[0].isdigit():
-        return False
-    if element[0] == '-' and not element[2].isdigit():
-        return False
+        if len(element) > 1 and element[0] == '-':
+            if not element[1].isdigit():
+                return False
+        else:
+            return False
     is_float = False
     for i in range(len(element)):
         if i == 0:
@@ -106,7 +120,7 @@ def lexemes_identifier(row_list):
             if check_num(cur_el):
                 # if is_prev_open_bracket:
                 #     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
-                token = Token(el['line'], cur_index, cur_el, 'Numeric constant', str(cur_el))
+                token = Token(el['line'], cur_index, cur_el, 'Numeric constant', get_num(cur_el))
                 # lexemes.append([cur_index, cur_el, 'Numeric constant'])
                 lexemes.append(token)
                 # consts.append([cur_index, cur_el, 'Numeric constant'])
@@ -118,6 +132,14 @@ def lexemes_identifier(row_list):
                 #     raise Exception(f"Lexical error on line {el['line']}: Undefined lexeme '{cur_el}'")
                 # lexemes.append([cur_index, cur_el, 'String constant'])
                 token = Token(el['line'], cur_index, cur_el, 'String constant', str(cur_el))
+                lexemes.append(token)
+                # consts.append([cur_index, cur_el, 'String constant'])
+                consts.append(token)
+                token_list.append(token)
+                cur_index += 1
+            elif cur_el.upper() == 'T' or cur_el.upper() == 'NIL':
+                value = True if cur_el.upper() == 'T' else False
+                token = Token(el['line'], cur_index, cur_el.upper(), 'Bool constant', value)
                 lexemes.append(token)
                 # consts.append([cur_index, cur_el, 'String constant'])
                 consts.append(token)
